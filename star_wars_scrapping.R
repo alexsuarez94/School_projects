@@ -1,7 +1,4 @@
-# films <- c("http://www.imdb.com/title/tt1490017/", "https://www.imdb.com/title/tt0121765/?ref_=ttls_li_tt",
-#            "https://www.imdb.com/title/tt0121766/?ref_=ttls_li_tt", "https://www.imdb.com/title/tt0076759/?ref_=ttls_li_tt")
-
-# with url
+# Parsing the name of main actors from star wars movies
 
 movies_list <- read_html("https://www.imdb.com/list/ls070150896/")
 
@@ -9,7 +6,8 @@ url <- movies_list %>%
   html_nodes(" h3 a") %>%
   html_attr('href') %>%
   na.exclude()
-url <- unlist(url)[1:9]
+
+url <- grep("/title/", url, value = TRUE)
 url
 
 #assign main path to every movie
