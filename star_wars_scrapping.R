@@ -3,9 +3,9 @@
 
 # with url
 
-prueba <- read_html("https://www.imdb.com/list/ls070150896/")
+movies_list <- read_html("https://www.imdb.com/list/ls070150896/")
 
-url <- prueba %>%
+url <- movies_list %>%
   html_nodes(" h3 a") %>%
   html_attr('href') %>%
   na.exclude()
