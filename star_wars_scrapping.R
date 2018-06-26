@@ -1,12 +1,23 @@
-films <- c("http://www.imdb.com/title/tt1490017/", "https://www.imdb.com/title/tt0121765/?ref_=ttls_li_tt",
-           "https://www.imdb.com/title/tt0121766/?ref_=ttls_li_tt", "https://www.imdb.com/title/tt0076759/?ref_=ttls_li_tt")
+# films <- c("http://www.imdb.com/title/tt1490017/", "https://www.imdb.com/title/tt0121765/?ref_=ttls_li_tt",
+#            "https://www.imdb.com/title/tt0121766/?ref_=ttls_li_tt", "https://www.imdb.com/title/tt0076759/?ref_=ttls_li_tt")
+
+# with urls
+url <- prueba %>%
+  html_nodes(".lister-item-header, h3 a") %>%
+  html_attr('href') %>%
+  na.exclude()
+url <- unlist(url)[1:9]
+url
+
+
+for (i in 1:length(url)){
+films <- paste0("http://www.imdb.com", url, sep = "")
+}
 
 star_wars <- list()
 for ( i in 1:length(films)){
   star_wars[[i]] <- read_html(films[i])
 }
-
-## ----eval=FALSE----------------------------------------------------------
 
 cast_star <- list()
 for(i in 1:length(films)){
@@ -25,12 +36,8 @@ which.max(vector)
 
 
 
-#para intentar recoger las url 
-# url <- prueba %>%
-#   html_nodes(".free") %>%
-#   html_attr('href') 
-# url
-# 
+
+
 
 
 
