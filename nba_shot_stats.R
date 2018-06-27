@@ -1,25 +1,62 @@
-library(rjson)
+######################################################################################
+
+if (!require(rjson)) install.packages("rjson")
+
+######################################################################################
+
+
 # shot data for Stephen Curry
-playerID <- 201939
-shotURL <- paste("http://stats.nba.com/stats/shotchartdetail?CFID=33&CFPARAMS=2014-15&ContextFilter=&ContextMeasure=FGA&DateFrom=&DateTo=&GameID=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerID=",playerID,"&PlayerPosition=&PlusMinus=N&Position=&Rank=N&RookieYear=&Season=2014-15&SeasonSegment=&SeasonType=Regular+Season&TeamID=0&VsConference=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&showZones=0", sep = "")
+playerID <- c(201939, 2544)
+season <- c("2014-15", "2015-16", "2016-17", "2017-18")
+shotURL <- paste0("http://stats.nba.com/stats/shotchartdetail?Period=0&VsConference=&LeagueID=
+00&LastNGames=0&TeamID=0&Position=&Location=&Outcome=&ContextMeasure=FGA&DateFrom=&StartPeriod=
+&DateTo=&OpponentTeamID=0&ContextFilter=&RangeType=&Season=",season,"&AheadBehind=&PlayerID=", playerID,"&EndRange=
+&VsDivision=&PointDiff=&RookieYear=&GameSegment=&Month=0&ClutchTime=&StartRange=&EndPeriod=&SeasonType=Regular
++Season&SeasonSegment=&GameID=&PlayerPosition=", sep = "")
+
+
 # import from JSON
-shotData <- fromJSON(file = shotURL, method="C")
 
+shotData <- rep( list(rep(list(list()), length(season))), length(playerID) ) 
+
+for (i in 1:length(playerID)){
+  for (j in 1:length(season)){
+    
+shotData[[i]][[j]] <- fromJSON(file = paste0("http://stats.nba.com/stats/shotchartdetail?Period=0&VsConference=&LeagueID=
+00&LastNGames=0&TeamID=0&Position=&Location=&Outcome=&ContextMeasure=FGA&DateFrom=&StartPeriod=
+&DateTo=&OpponentTeamID=0&ContextFilter=&RangeType=&Season=",season[j],"&AheadBehind=&PlayerID=", playerID[i],"&EndRange=
+&VsDivision=&PointDiff=&RookieYear=&GameSegment=&Month=0&ClutchTime=&StartRange=&EndPeriod=&SeasonType=Regular
++Season&SeasonSegment=&GameID=&PlayerPosition=", sep = ""), method="C")
+
+  }
+}
+
+
+shotDataf <- rep( list(rep(list(list()), length(season))), length(playerID) )
 # unlist shot data, save into a data frame
-shotDataf <- data.frame(matrix(unlist(shotData$resultSets[[1]][[3]]), ncol=24, byrow = TRUE))
+for (i in 1:length(playerID)){
+  for (j in 1:length(season)){
+    
+    shotDataf[[i]][[j]] <- data.frame(matrix(unlist(shotData[[i]][[j]]$resultSets[[1]][[3]]), ncol=24, byrow = TRUE))
+    # shot data headers
+    colnames(shotDataf[[i]][[j]]) <- shotData[[i]][[j]]$resultSets[[1]][[2]]
+    
+    # covert x and y coordinates into numeric
+    shotDataf[[i]][[j]]$LOC_X <- as.numeric(as.character(shotDataf[[i]][[j]]$LOC_X))
+    shotDataf[[i]][[j]]$LOC_Y <- as.numeric(as.character(shotDataf[[i]][[j]]$LOC_Y))
+    shotDataf[[i]][[j]]$SHOT_DISTANCE <- as.numeric(as.character(shotDataf[[i]][[j]]$SHOT_DISTANCE))
+  }
+}
 
-# shot data headers
-colnames(shotDataf) <- shotData$resultSets[[1]][[2]]
 
-# covert x and y coordinates into numeric
-shotDataf$LOC_X <- as.numeric(as.character(shotDataf$LOC_X))
-shotDataf$LOC_Y <- as.numeric(as.character(shotDataf$LOC_Y))
-shotDataf$SHOT_DISTANCE <- as.numeric(as.character(shotDataf$SHOT_DISTANCE))
+# have a look at the data to check if the loop are ok. 
+View(shotDataf[[1]][[3]])
 
-# have a look at the data
-View(shotDataf)
-
+###############################################################################################
 #plotting results
+
+###############################################################################################
+
 library(ggplot2)
 ggplot(shotDataf, aes(x=LOC_X, y=LOC_Y)) +
   geom_point(aes(colour = EVENT_TYPE))
