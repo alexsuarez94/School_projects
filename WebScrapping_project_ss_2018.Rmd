@@ -1,0 +1,35 @@
+---
+title: "Web_scrapping project"
+author: "Alejandro Suarez Otero"
+date: "27 de junio de 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Principal objetivo
+
+Los datos van a ser extraídos de la página web http://www.nba.com/#/ con el objetivo de analizar las estadísticas: 
+
+- En primer lugar, visualizar de mediante un shot chart los porcentajes de lanzamiento de los principales anotadores la liga de baloncesto estadounidense. 
+- En segundo lugar, comprobar si existe una correlación estadísticamente significativa entre los porcentajes de eficiencia por partido y las victorias/derrotas de sus respectivos equipos. 
+- Otro objetivo, analizar también la posibilidad la evolución de sus estadísticas básicas (rebotes, asistencias, robos, puntos, bloqueos) a lo largo de la temproada regular y comprobar si dichos números siguen constancia a lo largo del tiempo. 
+- Por último, me gustaría comprobar si las caracteristicas fisiologicas de estos anotadores son diferentes de las de otros jugadores en su posicion, para tratar de explicar si existe o no una ventaja fisica con respecto a sus oponentes. 
+
+## Tecnología de extracción
+
+La página web de la NBA etá construída con código HTML y por lo tanto, utilizaremos Gadget selectors para extraer la información de la página. 
+
+## Preprocesado de los datos
+
+A través de R Studio realizaré una limpieza de los datos mediante los paquetes stringr(),...
+
+## Análisis gráfico
+
+Se trataría de realizar una aplicación gráfica que muestre los shot charts, la evolución de las estadísticas básicas como una serie temporal y el impacto de cada jugador en su equipo. 
+
+
+
+
