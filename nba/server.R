@@ -7,6 +7,10 @@
 #    http://shiny.rstudio.com/
 #
 #    https://gist.github.com/Ray901/656f4314d00a7b00a05f#file-ui-r-L14
+
+
+# http://www.gregreda.com/2015/02/15/web-scraping-finding-the-api/
+
 library(shiny)
 
 
