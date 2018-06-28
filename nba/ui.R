@@ -8,23 +8,30 @@
 #
 
 library(shiny)
+library(ggplot2)
+
+source("nba_shot_stats.R")
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
-  
-  # Application title
-  titlePanel("NBA"),
-  
-  # Sidebar with a slider input for number of bins 
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("playerID", "Select a player:", choices = list("Stepehen Curry" = 1, "Lebron James"  = 2), selected = 1)
-      
-    ),
+shinyUI(
+  fluidPage(
     
-    # Show a plot of the generated distribution
-    mainPanel(
-       plotOutput("shotChart")
+    # Application title
+    titlePanel("NBA"),
+    
+    # Sidebar with a slider input for number of bins 
+    sidebarLayout(
+
+      sidebarPanel(
+        selectInput("playerID", "Select a player:", choices = list("Stephen Curry" = 1, "Lebron James"  = 2), selected = 1)
+
+      ),
+
+      # Show a plot of the generated distribution
+      mainPanel(
+        plotOutput("shotChart")
+      )
     )
+    
   )
-))
+)

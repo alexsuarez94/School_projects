@@ -6,41 +6,31 @@
 # 
 #    http://shiny.rstudio.com/
 #
-
+#    https://gist.github.com/Ray901/656f4314d00a7b00a05f#file-ui-r-L14
 library(shiny)
-library(ggplot2)
 
 
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-   
+
   
   #inside the reactive part should be all the preprocesing and the source to other codes, 
   #then i should just create plot and boxes. 
   nba_reactive <- reactive({
-    
-     source("nba_shot_stats.R")
     
     player <- switch(
       as.integer(input$playerID),
       1,
       2
     )
-    
-    # season <- switch(
-    #   as.integer(input$season),
-    #   1,
-    #   2
-    # )
-    
-    #df.player <- shotDataf[[player]][[season]]
+  
     df.player <- shotDataf[[player]][[1]]
     
     resp <- list(df.player)
     resp
   })
-  
+
   
   output$shotChart <- renderPlot({
     
@@ -52,7 +42,6 @@ shinyServer(function(input, output) {
     ggplot(data, aes(x=LOC_X, y=LOC_Y)) +
       geom_point(aes(colour = EVENT_TYPE))
   
-    
   })
   
 })
