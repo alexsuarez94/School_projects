@@ -18,7 +18,7 @@ list.of.packages <- c("ggplot2", "shiny", "shinydashboard", "RCurl", "grid", "jp
                       "hexbin", "plyr", "shinyjs", "gridExtra", "rjson", "jsonlite")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
-require(list.of.packages)
+lapply(list.of.packages, require, character.only = TRUE)
 
 
 source("data/nba_shot_stats.R")
