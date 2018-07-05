@@ -1,0 +1,82 @@
+---
+title: "Web Scrapping Project"
+author: "Alejandro Suarez Otero"
+date: "5 de julio de 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Principales objetivos 
+
+El objetivo principal de este trabajo es utilizar diversas técnicas de web-scrapping con la intención de extraer información estadística sobre los principales jugadores de la liga estadounidense de baloncesto. Aunque la variedad de estudios posibles es inmensa, dada la cantidad de datos que ofrece esta página web, el foco del análisis se centrará en unos sencillos gráficos descriptivos acerca de las estadísticas de tiro de las principales estrellas NBA. 
+
+En concreto, se analizará en qué posiciones del campo existe más predisposición al lanzamiento por parte del jugador y qué porcentajes alcanza en dichas posiciones. Para ello, se construirá una aplicación shiny que que interaccione con el usuario. 
+
+
+## Fuentes de datos
+
+Los datos van a ser extraídos de las páginas web: http://http://www.nba.com/ y de *wikipedia*. 
+De la primera extraeremos las principales estadísticas de tiro, mientras que de la segunda obtendremos los datos biográficos básicos sobre los diferentes jugadores. 
+
+## Tecnología de extracción
+
+La página NBA tiene su información guardada en formato JSON y Wikipedia está construída en formato HTML por lo que se han utilizado diferentes técnicas de extracción medinate los paquete *rjson()*, *jsonlite()* y *rvest()*. Explicaré la extracción con más detalle en el siguiente apartado. 
+
+## Proceso 
+
+El proceso comenzó con la búsqueda de los enlaces que me permitiesen obtener la información principal de la página NBA. Como el navegador es el encargado de representar el contenido HTML, es sencillo utilizar sus herramientas de desarrollador para obtener una idea exacta de donde debemos buscar la información. Para ilustrar este proceso se muestra una captura obtenida del navegador web Chrome. 
+
+![](XHR.png)
+
+Para abrir estas opcones de desarrollar simplemente deben seguirse estos pasos: Developers Tools -> Network -> XHR. XHR es el acrónimo de XMLHttRequest, na vez se ha clickado en él, deberían aparecer diferentes entradas. Algunas de ellas, como se muestra en la imagen son APIs que nos devuelven los datos que buscamos en formato JSON. 
+
+En cuanto a los datos biográficos de cada jugador se utilizó la página específica de la Wikipedia y se extrajo el .vcard mediante el paquete rvest(), a continuación se muestra una imagen de los datos extraídos:
+
+![](wiki.png)
+
+## Análisis de datos 
+
+Una vez hallados los datos relevantes utilicé diferentes los paquetes mencionados para la extracción y procesado de la información. Los scripts utilizados son los siguientes:
+
+1. Para la obtención de la información que conforma los gráficos:
+  + player_id.R
+  + nba_shot_stats.R
+2. Para la obtención de las estadísticas de la tabla:
+  + player_id.R
+  + lebron_stats.R
+  + durant_stats.R
+  + harden_stats.R
+  + curry_stats.R
+3. Para la obtención de las imágenes:
+  + player_id.R
+  + save_phtos.R
+4. Para la información biográfica básica:
+  + wiki_bio.R
+
+No realizaré aquí ninguna descripción detallada por que cada scritp presenta los comentarios oportunos acerca del proceso de extracción.
+
+##Resultado final
+
+```{r}
+knitr::include_app("https://yihui.shinyapps.io/miniUI/", 
+  height = "600px")
+```
+
+
+## Cuestiones por resolver
+
+En términos generales estoy satisfecho con el trabajo realizado aunque soy consicente de lo mejorable que es el código empleado. Por restricciones temporales algunos aspectos a mejorar han quedado pendientes:
+
+* Sólo he podido construir una app que refleje las estadísticas de 4 jugadores debido al coste temporal que tiene extraer los datos de la página web. Me gustaría averiguar formas más eficientes de obtenr estos datos. 
+
+* No he tenido tiempo tampoco para automatizar debidamente el código y, en ocasiones, este está construido de forma muy manual. 
+
+* la extracción de HTML ha sido complicada a pesar de querer obtener únicamente una parte muy pequeña de toda la información disponible. 
+
+* POr cuestiones de fallo en la conexión con el servidor y de tiempo de espera, he tenido que guardar varios objetos obtenidos de la web para interactuar con ellos de forma local desde la aplicación de shiny. 
+
+
+
