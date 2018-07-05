@@ -60,10 +60,15 @@ No realizaré aquí ninguna descripción detallada por que cada scritp presenta los
 
 ##Resultado final
 
+El resultado final....
+
+Con esta sencilla instrucción se puede acceder a mi aplicación de shiny. 
 ```{r}
-knitr::include_app("https://yihui.shinyapps.io/miniUI/", 
-  height = "600px")
+shiny::runGitHub( "alexsuarez94/School_projects") 
 ```
+
+A continuación muestro dos capturas tomadas directamente de la app en funcionamiento:
+
 
 
 ## Cuestiones por resolver
