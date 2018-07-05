@@ -1,18 +1,25 @@
-
-library(shiny)
-library(shinydashboard)
-library(ggplot2)
-library(RCurl)
-library(grid)
-library(jpeg)
-library(hexbin)
-library(plyr)
-library(shinyjs)
-library(gridExtra)
-library(rjson)
-library(jsonlite)
+# 
+# library(shiny)
+# library(shinydashboard)
+# library(ggplot2)
+# library(RCurl)
+# library(grid)
+# library(jpeg)
+# library(hexbin)
+# library(plyr)
+# library(shinyjs)
+# library(gridExtra)
+# library(rjson)
+# library(jsonlite)
 
 #library(rvest)
+
+list.of.packages <- c("ggplot2", "shiny", "shinydashboard", "RCurl", "grid", "jpeg", 
+                      "hexbin", "plyr", "shinyjs", "gridExtra", "rjson", "jsonlite")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+
 
 source("data/nba_shot_stats.R")
 
