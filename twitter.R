@@ -14,7 +14,7 @@ oauth <- setup_twitter_oauth(twitter_key,
                               access_secret)
 
 ###
-myTweets <- searchTwitter("#refugees", n = 100)
+myTweets <- searchTwitter("refugees", n = 100)
 
 tweets.text <- sapply(myTweets, function(x) x$getText())
 # Replace @UserName

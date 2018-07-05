@@ -1,0 +1,13 @@
+name: nba_shot_analytics
+title: nba_shot_analytics
+username:
+account: alexsuarez94
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 374385
+bundleId: 1465879
+url: https://alexsuarez94.shinyapps.io/nba_shot_analytics/
+when: 1530787256.85141
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: final_project_report.Rmd

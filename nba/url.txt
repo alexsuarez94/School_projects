@@ -1,3 +1,0 @@
-https://github.com/toddwschneider/ballr
-http://toddwschneider.com/posts/ballr-interactive-nba-shot-charts-with-r-and-shiny/
-https://stats.nba.com/players/
