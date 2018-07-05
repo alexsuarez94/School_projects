@@ -14,7 +14,7 @@ library(jsonlite)
 
 #library(rvest)
 
-source("nba_shot_stats.R")
+source("data/nba_shot_stats.R")
 
 ui <- dashboardPage(
   
@@ -128,21 +128,21 @@ server <- function(input, output) {
     #This is where the image is set
     if(nba_reactive()[[3]] == 1){
       
-      load("lbj_bio.RData")
+      load("data/lbj_bio.RData")
       lbj_bio
       
     }
     else if(nba_reactive()[[3]] ==  2){
       
-      load("hrd_bio.RData")
+      load("data/hrd_bio.RData")
       hrd_bio
     }
     else if(nba_reactive()[[3]] ==  3){
-      load("stp_bio.RData")
+      load("data/stp_bio.RData")
       stp_bio
     }
     else if(nba_reactive()[[3]] ==  4){
-      load("dur_bio.RData")
+      load("data/dur_bio.RData")
       dur_bio
     }
     
@@ -194,16 +194,16 @@ server <- function(input, output) {
     
     #This is where the image is set 
     if(nba_reactive()[[3]] == 1){            
-      list(src = "lebron.png", alt = "Face")
+      list(src = "images/lebron.png", alt = "Face")
     }                                        
     else if(nba_reactive()[[3]] ==  2){
-      list(src = "harden.png", alt = "Face")
+      list(src = "images/harden.png", alt = "Face")
     }
     else if(nba_reactive()[[3]] ==  3){
-      list(src = "curry.png", alt = "Face")
+      list(src = "images/curry.png", alt = "Face")
     }
     else if(nba_reactive()[[3]] ==  4){
-      list(src = "durant.png", alt = "Face")
+      list(src = "images/durant.png", alt = "Face")
     }
   }, deleteFile = FALSE) #close image, no se ven por el momento
   
@@ -214,7 +214,7 @@ server <- function(input, output) {
     
     if(nba_reactive()[[2]] == "a"){
       
-      source("theme_black_ggplot.R")
+      source("ggplot_func/theme_black_ggplot.R")
       
       #generate plot from input$playerID from ui.R
       data <- nba_reactive()[[1]]
@@ -227,11 +227,11 @@ server <- function(input, output) {
       
     } else if(nba_reactive()[[2]] == "b"){
       
-      source("theme_black_ggplot.R")
+      source("ggplot_func/theme_black_ggplot.R")
       
       data <- nba_reactive()[[1]]
       # half court image
-      court <- rasterGrob(readJPEG("court3.jpeg"),
+      court <- rasterGrob(readJPEG("images/court3.jpeg"),
                           width=unit(1,"npc"), height=unit(1.2,"npc"))
       
       # plot using NBA court background and colour by shot zone
@@ -248,13 +248,13 @@ server <- function(input, output) {
     } else if (nba_reactive()[[2]] == "c"){
       
       
-      source("theme_black_ggplot.R")
+      source("ggplot_func/theme_black_ggplot.R")
       
       data <- nba_reactive()[[1]]
       
       data <- data[which(!data$SHOT_ZONE_BASIC=='Restricted Area'), ]
       
-      court <- rasterGrob(readJPEG("court3.jpeg"),
+      court <- rasterGrob(readJPEG("images/court3.jpeg"),
                           width=unit(1,"npc"), height=unit(1.2,"npc"))
       
       # plot shots using ggplot, hex bins, NBA court backgroung image.
@@ -271,7 +271,7 @@ server <- function(input, output) {
       
     } else if (nba_reactive()[[2]] == "d"){
       
-      source("theme_black_ggplot.R")
+      source("ggplot_func/theme_black_ggplot.R")
       
       data <- nba_reactive()[[1]]
       
@@ -289,7 +289,7 @@ server <- function(input, output) {
       shotS$SHOT_ACCURACY_LAB <- paste(as.character(round(100 * shotS$SHOT_ACCURACY, 1)), "%", sep="")
       
       #loading court
-      court <- rasterGrob(readJPEG("court3.jpeg"),
+      court <- rasterGrob(readJPEG("images/court3.jpeg"),
                           width=unit(1,"npc"), height=unit(1.2,"npc"))
       
       # plot shot accuracy per zone
@@ -314,20 +314,20 @@ server <- function(input, output) {
     #This is where the image is set
     if(nba_reactive()[[3]] == 1){
       
-      load("lebron_stats.RData")
+      load("data/lebron_stats.RData")
       df_lbj
       
     }
     else if(nba_reactive()[[3]] ==  2){
-      load("harden_stats.RData")
+      load("data/harden_stats.RData")
       df_hrd
     }
     else if(nba_reactive()[[3]] ==  3){
-      load("curry_stats.RData")
+      load("data/curry_stats.RData")
       df_stp
     }
     else if(nba_reactive()[[3]] ==  4){
-      load("durant_stats.RData")
+      load("data/durant_stats.RData")
       df_dur
     }
     

@@ -1,6 +1,6 @@
 # shot data forlebron
-source("player_id.R")
-playerID <- player_id[4]
+source("data/player_id.R")
+playerID <- player_id[3]
 season <- c("2014-15", "2015-16", "2016-17", "2017-18")
 
 ####################
@@ -29,7 +29,7 @@ for (i in 1:length(playerID)){
 }
 
 #to create dataframe for each player. 
-df_dur <- ldply(basic_Stats[[1]], data.frame)[ , c(2, 4, 6, 7, 8,22, 23, 24, 25, 26, 29, 31)]
+df_stp <- ldply(basic_Stats[[1]], data.frame)[ , c(2, 4, 6, 7, 8,22, 23, 24, 25, 26, 29, 31)]
 
-save(df_dur, file = "durant_stats.RData")
 
+save(df_stp, file ="curry_stats.RData")

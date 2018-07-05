@@ -3,7 +3,7 @@
 # if (!require(rjson)) install.packages("rjson")
 
 ######################################################################################
-source("player_id.R") 
+source("data/player_id.R") 
 
 # shot data for Stephen Curry
 playerID <- player_id
