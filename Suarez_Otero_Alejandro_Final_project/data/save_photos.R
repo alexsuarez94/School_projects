@@ -1,4 +1,4 @@
-source("player.id")
+source("data/player.id")
 #save photos
 library(png)
 

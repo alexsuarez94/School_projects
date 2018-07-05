@@ -1,5 +1,5 @@
 # shot data forlebron
-source("player_id.R")
+source("data/player_id.R")
 playerID <- player_id[3]
 season <- c("2014-15", "2015-16", "2016-17", "2017-18")
 

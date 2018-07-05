@@ -16,7 +16,7 @@ library(jsonlite)
 
 source("nba_shot_stats.R")
 
-dashboardPage(
+ui <- dashboardPage(
   
   
   
