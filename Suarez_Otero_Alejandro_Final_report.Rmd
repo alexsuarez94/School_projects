@@ -11,7 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Principales objetivos 
 
-El objetivo principal de este trabajo es utilizar diversas técnicas de web-scrapping con la intención de extraer información estadística sobre los principales jugadores de la liga estadounidense de baloncesto. Aunque la variedad de estudios posibles es inmensa, dada la cantidad de datos que ofrece esta página web, el foco del análisis se centrará en unos sencillos gráficos descriptivos acerca de las estadísticas de tiro de las principales estrellas NBA. 
+La principal motivación de este trabajo es aplicar las técnicas de  *web-scrapping* aprendidas durante este curso, con la intención de extraer información estadística sobre algunos de los jugadores más destacados de la liga estadounidense de baloncesto. 
+
+Aunque la variedad de estudios posibles es inmensa, dada la cantidad de datos que ofrece esta página web, el foco del análisis se centrará en unos sencillos gráficos descriptivos acerca de las estadísticas de tiro de las principales estrellas NBA. 
 
 En concreto, se analizará en qué posiciones del campo existe más predisposición al lanzamiento por parte del jugador y qué porcentajes alcanza en dichas posiciones. Para ello, se construirá una aplicación shiny que que interaccione con el usuario. 
 
