@@ -3,7 +3,7 @@ source("data/player_id.R")
 playerID <- player_id[1]
 season <- c("2014-15", "2015-16", "2016-17", "2017-18")
 
-####################
+# scrapping data with rjosn() package
 basic_stat <- rep( list(rep(list(list()), length(season))), length(playerID) ) 
 
 for (i in 1:length(playerID)){
@@ -14,7 +14,7 @@ for (i in 1:length(playerID)){
   }
 }
 
-###################
+# preprocessing data
 
 basic_Stats <- rep( list(rep(list(list()), length(season))), length(playerID) )
 # unlist shot data, save into a data frame
@@ -28,9 +28,10 @@ for (i in 1:length(playerID)){
   }
 }
 
-#to create dataframe for each player. 
+#to create dataframe for lebron james
 df_lbj <- ldply(basic_Stats[[1]], data.frame)[ , c(2, 4, 6, 7, 8,22, 23, 24, 25, 26, 29, 31)]
 
+#save data to avoid reloading. 
 save(df_lbj, file ="lebron_stats.RData")
 
 

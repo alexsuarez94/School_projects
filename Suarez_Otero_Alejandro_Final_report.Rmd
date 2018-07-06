@@ -2,12 +2,35 @@
 title: "Web Scrapping Project"
 author: "Alejandro Suarez Otero"
 date: "5 de julio de 2018"
-output: html_document
+output:
+  pdf_document: 
+    latex_engine: xelatex
+  html_document: default
+bibliography: scholar.bib
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r, include=FALSE, warning=FALSE, message=FALSE}
+# If the package is not installed then it will be installed
+libraries <- c("rjson", "plyr", "dplyr", "kableExtra", "hexbin", "jpeg", "RCurl", "grid", "ggplot2")
+
+
+check.libraries <- is.element(libraries, 
+                              installed.packages()[, 1])==FALSE
+libraries.to.install <- libraries[check.libraries]
+if (length(libraries.to.install!=0)) {
+  install.packages(libraries.to.install)
+}
+
+success <- sapply(libraries,require, quietly = FALSE,  character.only = TRUE)
+if(length(success) != length(libraries)) {stop("A package failed to return a success in require() function.")}
+
+rm(libraries, check.libraries, libraries.to.install, success)
+```
+
 
 ## Principales objetivos 
 
@@ -20,28 +43,89 @@ En concreto, se analizará en qué posiciones del campo existe más predisposición 
 
 ## Fuentes de datos
 
-Los datos van a ser extraídos de las páginas web: http://http://www.nba.com/ y de *wikipedia*. 
+Los datos van a ser extraídos de las páginas web: [NBA](http://http://www.nba.com/) de *wikipedia*. 
 De la primera extraeremos las principales estadísticas de tiro, mientras que de la segunda obtendremos los datos biográficos básicos sobre los diferentes jugadores. 
 
 ## Tecnología de extracción
 
-La página NBA tiene su información guardada en formato JSON y Wikipedia está construída en formato HTML por lo que se han utilizado diferentes técnicas de extracción medinate los paquete *rjson()*, *jsonlite()* y *rvest()*. Explicaré la extracción con más detalle en el siguiente apartado. 
+La página NBA tiene su información guardada en formato JSON y Wikipedia está construída en formato HTML por lo que se han utilizado diferentes técnicas de extracción medinate los paquete *rjson()*, *jsonlite()* y *rvest()*. Estos paquetes han sido utilizados mediante la lectura de apartados destacados de los siguientes artículos: [@couture2013rjson], [@ooms2014jsonlite] y [@wickham2015rvest].
 
-## Proceso 
+## Búsqueda de fuentes de información 
 
-El proceso comenzó con la búsqueda de los enlaces que me permitiesen obtener la información principal de la página NBA. Como el navegador es el encargado de representar el contenido HTML, es sencillo utilizar sus herramientas de desarrollador para obtener una idea exacta de donde debemos buscar la información. Para ilustrar este proceso se muestra una captura obtenida del navegador web Chrome. 
+El proceso comenzó con la búsqueda de los enlaces que me permitiesen obtener la información principal de la página NBA. Como el navegador es el encargado de representar el contenido HTML, es sencillo utilizar sus herramientas de desarrollador para obtener una idea exacta de donde debemos buscar la información. 
 
-![](XHR.png)
+Para abrir estas opcones de desarrollador simplemente deben seguirse estos pasos: Developers Tools -> Network -> XHR. XHR es el acrónimo de XMLHttRequest, na vez se ha clickado en él, deberían aparecer diferentes entradas. Algunas de ellas, como se muestra en la imagen son APIs que nos devuelven los datos que buscamos en formato JSON. 
 
-Para abrir estas opcones de desarrollar simplemente deben seguirse estos pasos: Developers Tools -> Network -> XHR. XHR es el acrónimo de XMLHttRequest, na vez se ha clickado en él, deberían aparecer diferentes entradas. Algunas de ellas, como se muestra en la imagen son APIs que nos devuelven los datos que buscamos en formato JSON. 
+En cuanto a los datos biográficos de cada jugador se utilizó la página específica de la Wikipedia y se extrajo el .vcard mediante el paquete rvest(), a continuación se muestran imágenes de los datos extraídos:
 
-En cuanto a los datos biográficos de cada jugador se utilizó la página específica de la Wikipedia y se extrajo el .vcard mediante el paquete rvest(), a continuación se muestra una imagen de los datos extraídos:
 
-![](wiki.png)
+```{r, echo=FALSE, fig.cap="Developer Tools of Google Chrome", out.width = '100%'}
+knitr::include_graphics("Markdown_data/XHR.png")
+```
+
+
+```{r , echo=FALSE, fig.cap="Wikipedia biographic information", out.width = '100%'}
+knitr::include_graphics("Markdown_data/wiki.png")
+```
+
+\newpage
+
 
 ## Análisis de datos 
 
-Una vez hallados los datos relevantes utilicé diferentes los paquetes mencionados para la extracción y procesado de la información. Los scripts utilizados son los siguientes:
+Una vez hallados los datos relevantes he utilizado diferentes los paquetes mencionados para la extracción y procesado de la información. 
+La primera tarea realizada consistió en localizar el ID que identifica a cada jugador dentro de la página oficial de la NBA. Los resultados obtenidos se muestran en la siguiente tabla:
+
+```{r echo=FALSE, warning=FALSE}
+load("Markdown_data/player_id.RData")
+
+kable(player_id) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+A continuación, mediante el paquete *rjson()* se obtienen los datos representados en la siguiente tabla, los cuáles muestra las localizaciones de cada tiro realizado por un determinado jugador durante toda la temporada. A modo de muestra, aquí sólo se representan los primeros diez tiros del jugador (LeBron James) durante la temporada 2014/2015. 
+
+```{r, echo=FALSE, warning=FALSE}
+load("Markdown_data/shot_data.RData")
+
+tab1 <- head(shot_data, 10)[ , c(3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)]
+
+
+kable(tab1[, 1:4]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+kable(tab1[, 5:8]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+kable(tab1[, 9:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+Además de estos datos se extraen también los promedios de cada jugador para 4 temporadas diferentes. Continuando con el ejemplo del mismo jugador, se muestra a continuación la tabla obtenida: 
+
+```{r, echo=FALSE, warning=FALSE}
+load("data/lebron_stats.RData")
+
+kable(df_lbj[ , -2]) %>%
+   kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+Por último, se extrae mediante el paquete *rvest()* la información biográfica de los jugadores. La siguiente tabla ilustra la información que se incorpora en la aplicación de Shiny:
+
+
+```{r, echo=FALSE, warning=FALSE}
+load("data/lbj_bio.RData")
+
+kable(lbj_bio) %>%
+   kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+A la par, se extraen también las fotografías de los deportistas, las cuáles se guardan en una carpeta para ser utilizadas en la aplicación. 
+
+En definitiva, y como se puede observar en el repositorio *alexsuarez94/School_project* de **GitHub**, los scrits utilizados para extraer y guardar estos datos están guardados en la carpeta data. Su estructura básica es la siguiente:
 
 1. Para la obtención de la información que conforma los gráficos:
   + player_id.R
@@ -58,32 +142,73 @@ Una vez hallados los datos relevantes utilicé diferentes los paquetes mencionado
 4. Para la información biográfica básica:
   + wiki_bio.R
 
-No realizaré aquí ninguna descripción detallada por que cada scritp presenta los comentarios oportunos acerca del proceso de extracción.
+No realizaré aquí ninguna descripción detallada de estos archivos ya que cada *script* presenta los comentarios oportunos acerca ddel proceso llevado a cabo. 
 
 ##Resultado final
 
-El resultado final....
+A modo de muestra expondré aquí dos de los gráficos obtenidos, de nuevo para el jugador LeBron James. Para observar el resto de gráficos es necesario acceder a la aplicación mediante *RStudio* y la sencilla instrucción que aparece debajo de estos gráficos. 
 
-Con esta sencilla instrucción se puede acceder a mi aplicación de shiny. 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
+source("ggplot_func/theme_black_ggplot.R")
+
+data <- shot_data[which(!shot_data$SHOT_ZONE_BASIC=='Restricted Area'), ]
+      
+      court <- rasterGrob(readJPEG("images/court3.jpeg"),
+                          width=unit(1,"npc"), height=unit(1.2,"npc"))
+      
+      # plot shots using ggplot, hex bins, NBA court backgroung image.
+      ggplot(data, aes(x=LOC_X, y=LOC_Y)) + 
+        annotation_custom(court, -250, 250, -52, 418) +
+        stat_binhex(bins = 35, colour = "black", alpha = 0.8) +
+        scale_fill_gradientn(colours = c("yellow", "darkgoldenrod1","orange", "orangered4","red", "darkred", "black")) +
+        guides(alpha = FALSE, size = FALSE) +
+        xlim(250, -250) +
+        ylim(-52, 418) +
+        ggtitle(paste("Shot Chart\n", unique(data$PLAYER_NAME), sep = "")) +
+        theme_black()
+      
+      
+      # plot using NBA court background and colour by shot zone
+      ggplot(data, aes(x=LOC_X, y=LOC_Y)) +
+        annotation_custom(court, -250, 250, -50, 420) +
+        geom_point(aes(colour = SHOT_ZONE_BASIC, shape = EVENT_TYPE), size = 2.5) +
+        xlim(250, -250) +
+        ylim(-50, 420) + 
+        ggtitle(paste("Shot Chart\n", unique(data$PLAYER_NAME), sep = "")) +
+        theme_black()
+```
+
+Con esta sencilla instrucción se puede acceder a la aplicación de shiny, ubicada también en el respositorio bajo en nombre de archivo *app.R* (es importanter mencionar que la aplicación puede tardar unso segundos para cargarse al inicio, aproximadamente unos 30 segundos en el peor de los casos). 
+
+```{r, eval = FALSE}
 shiny::runGitHub( "alexsuarez94/School_projects") 
 ```
 
-A continuación muestro dos capturas tomadas directamente de la app en funcionamiento:
 
+A continuación muestro una captura tomada directamente de la app en funcionamiento:
 
+\newpage
+```{r , echo=FALSE, fig.cap="Shiny App", out.width = '100%'}
+knitr::include_graphics("Markdown_data/screenshot_app1.png")
+```
 
-## Cuestiones por resolver
+## Conclusiones
 
-En términos generales estoy satisfecho con el trabajo realizado aunque soy consicente de lo mejorable que es el código empleado. Por restricciones temporales algunos aspectos a mejorar han quedado pendientes:
+En términos generales estoy satisfecho con el trabajo realizado aunque soy consicente de lo mejorable que es el código empleado. 
 
-* Sólo he podido construir una app que refleje las estadísticas de 4 jugadores debido al coste temporal que tiene extraer los datos de la página web. Me gustaría averiguar formas más eficientes de obtenr estos datos. 
+Debsdo a las restricciones temporales algunos aspectos a mejorar han quedado pendientes:
+
+* Sólo he podido construir una app que refleje las estadísticas de 4 jugadores debido al coste temporal que tiene extraer los datos de la página web. Me gustaría averiguar formas más eficientes de obtener estos datos. 
 
 * No he tenido tiempo tampoco para automatizar debidamente el código y, en ocasiones, este está construido de forma muy manual. 
 
-* la extracción de HTML ha sido complicada a pesar de querer obtener únicamente una parte muy pequeña de toda la información disponible. 
+* La extracción de HTML ha sido complicada a pesar de querer obtener únicamente una parte muy pequeña de toda la información disponible. 
 
-* POr cuestiones de fallo en la conexión con el servidor y de tiempo de espera, he tenido que guardar varios objetos obtenidos de la web para interactuar con ellos de forma local desde la aplicación de shiny. 
+* Por cuestiones de fallo en la conexión con el servidor y de tiempo de espera, he tenido que guardar varios objetos obtenidos de la web para interactuar con ellos de forma local desde la aplicación de shiny. 
+
+* He intenado publicar la aplicación mediante la página web [Shiny Apps](https://www.shinyapps.io/), sin embargo, el coste computacional requerido para la extracción de los datos ralentiza demasiado la aplicación. 
+
+## Bibliografía
 
 
 

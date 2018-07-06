@@ -1,3 +1,4 @@
+#first, we soruce function black_them to integrate this image into te shiny app
 source("ggplot_func/theme_black_ggplot_court.R")
 
 circle_fun <- function(center=c(0,0), diameter=1, npoints=500, start=0, end=2){
@@ -107,21 +108,8 @@ court <- rbind(court, new_coords(x = c(cercle_mil_petit_out[250:500,"x"], rev(ce
 court <- rbind(court, new_coords(x = cercle_ce[,"x"], y = cercle_ce[,"y"], group = group, descri = "anneau"))
 
 library(ggplot2)
-# P <- ggplot() + geom_polygon(data = court, aes(x = x, y = y, group = group), col = "gray") +
-#   coord_equal() +
-#   ylim(-2,96) +
-#   xlim(-5,55) +
-#   scale_x_continuous(breaks = c(0, 12.5, 25, 37.5, 50)) +
-#   scale_y_continuous(breaks = c(0, 23.5, 47, 70.5, 94)) +
-#   xlab("") + ylab("") +
-#   theme(axis.text.x = element_blank(),
-#         axis.text.y = element_blank(), axis.ticks.x = element_blank(),
-#         axis.ticks.y = element_blank(), axis.title = element_blank()
-#   )
-# 
-# P
 
-#half 
+#half court representation
 P_half_180 <- ggplot() + geom_polygon(data = court[court$side==1,], aes(x = x, y = y, group = group), col = "white") +
   coord_equal() +
   xlim(-2,50) +
@@ -130,10 +118,7 @@ P_half_180 <- ggplot() + geom_polygon(data = court[court$side==1,], aes(x = x, y
   scale_y_continuous(breaks = c(0, -12.5, -25, -37.5, -50)) +
   xlab("") + ylab("") +
   theme_black()
-  # theme(axis.text.x = element_blank(),
-  #       axis.text.y = element_blank(), axis.ticks.x = element_blank(),
-  #       axis.ticks.y = element_blank(), axis.title = element_blank()
-  #)
+
 P_half_180
 
 ggsave("court2.jpeg")

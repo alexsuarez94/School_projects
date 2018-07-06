@@ -13,7 +13,6 @@ table <- webpage %>%
   html_nodes("table.vcard") %>%
   html_table(header=F, fill = T)
 
-
 table1 <- table[[1]]$X1
 table2 <- table[[1]]$X2
 
@@ -79,6 +78,7 @@ table3 <- as.data.frame(cbind(table1, table2))
 dur_bio <- table3[c(3, 5, 6, 7, 8, 10, 11), ]
 names(dur_bio) <- c("FIELD", "PLAYER")
 
+#saving bio informartion of each player to avoid reloading every time we launch the app. 
 save(lbj_bio , file ="lbj_bio.RData")
 save(hrd_bio ,file ="hrd_bio.RData")
 save(stp_bio, file ="stp_bio.RData")

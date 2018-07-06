@@ -1,8 +1,4 @@
-######################################################################################
-
-# if (!require(rjson)) install.packages("rjson")
-
-######################################################################################
+# sourcing player ids
 source("data/player_id.R") 
 
 # shot data for Stephen Curry
@@ -10,7 +6,7 @@ playerID <- player_id
 season <- c("2014-15", "2015-16", "2016-17", "2017-18")
 
 
-# import from JSON
+# scrapping data from JSON database with rjson() package
 
 shotData <- rep( list(rep(list(list()), length(season))), length(playerID) ) 
 
@@ -26,8 +22,9 @@ shotData[[i]][[j]] <- rjson::fromJSON(file = paste0("http://stats.nba.com/stats/
   }
 }
 
-
+#preprocessing data
 shotDataf <- rep( list(rep(list(list()), length(season))), length(playerID) )
+
 # unlist shot data, save into a data frame
 for (i in 1:length(playerID)){
   for (j in 1:length(season)){
@@ -36,7 +33,7 @@ for (i in 1:length(playerID)){
     # shot data headers
     colnames(shotDataf[[i]][[j]]) <- shotData[[i]][[j]]$resultSets[[1]][[2]]
     
-    # covert x and y coordinates into numeric
+    # covert x and y coordinates into numeric to plot them in court charts. 
     shotDataf[[i]][[j]]$LOC_X <- as.numeric(as.character(shotDataf[[i]][[j]]$LOC_X))
     shotDataf[[i]][[j]]$LOC_Y <- as.numeric(as.character(shotDataf[[i]][[j]]$LOC_Y))
     shotDataf[[i]][[j]]$SHOT_DISTANCE <- as.numeric(as.character(shotDataf[[i]][[j]]$SHOT_DISTANCE))
